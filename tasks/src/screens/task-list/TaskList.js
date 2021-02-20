@@ -1,15 +1,46 @@
-import React from 'react';
-import { Text, View, ImageBackground, StyleSheet } from 'react-native';
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import React, { useState } from 'react';
+import { Text, View, ImageBackground, StyleSheet, FlatList } from 'react-native';
 
+import Task from '../../components/Task';
 import todayImage from '../../../assets/imgs/today.jpg';
 import commonStyles from '../../common/common.styles';
 
 const TaskList = () => {
-
+   
+    initialState = [
+        {
+            id: Math.random(),
+            desc: 'By React Native Book 01',
+            estimateAt: new Date(),
+            doneAt: new Date(),
+        },
+        {
+            id: Math.random(),
+            desc: 'Read React Native Book 02',
+            estimateAt: new Date(),
+            doneAt:null,
+        },
+    ]
+   
+    const [tasks, setTasks] =  useState(initialState);
+    
     const today = moment().locale('pt-br').format('ddd, D [de] MMM');
 
+    
+    const toogleTask = taskId =>{
+         const tasksArray = [...tasks];
+ 
+         tasksArray.forEach(task => {
+             if(task.id === taskId){
+                 task.doneAt = task.doneAt ? null : new Date();
+             };
+         });
+ 
+         setTasks(tasksArray);
+     }
+    
     return (
         <View style={style.container}>
 
@@ -21,9 +52,12 @@ const TaskList = () => {
             </ImageBackground>
 
             <View style={style.taskList}>
-                <Text>Task #01</Text>
-                <Text>Task #02</Text>
-                <Text>Task #03</Text>
+                <FlatList
+                    data={tasks}
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={({item})=><Task {...item} toogleTask={toogleTask}/>}
+                />
+
             </View>
 
         </View>
@@ -32,10 +66,10 @@ const TaskList = () => {
 
 const style = StyleSheet.create({
     container: {
-        flexGrow: 1
+        flex: 1
     },
     imageBar: {
-        flexGrow: 3
+        flex: 3
     },
     titleBar: {
         flex: 1,
@@ -46,7 +80,7 @@ const style = StyleSheet.create({
         fontFamily: commonStyles.fontFamily,
         color: commonStyles.colors.secondary,
         fontSize: 50,
-        marginBottom:20
+        marginBottom: 20
     },
     subTitle: {
         fontFamily: commonStyles.fontFamily,
@@ -54,7 +88,7 @@ const style = StyleSheet.create({
         fontSize: 20,
     },
     taskList: {
-        flexGrow: 7
+        flex: 7
     }
 });
 export default TaskList;
