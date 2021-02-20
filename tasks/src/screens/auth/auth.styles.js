@@ -1,5 +1,4 @@
-import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import commonStyles from '../../common/common.styles';
 
 const AuthStyles = StyleSheet.create({
@@ -31,17 +30,22 @@ const AuthStyles = StyleSheet.create({
     input: {
         backgroundColor: commonStyles.colors.secondary,
         marginTop: 10,
-        padding: Platform.OS === 'ios' ? 15 : 10
     },
     btn: {
-        backgroundColor: '#080',
         marginTop: 10,
         padding: 10,
         alignItems: 'center',
+        borderRadius:8
     },
     btnText: {
         color: commonStyles.colors.secondary,
         fontSize: 20
+    },
+    btnEnable:{
+        backgroundColor:'#080'
+    },
+    btnDisabled:{
+        backgroundColor:'#AAA'
     }
 });
 

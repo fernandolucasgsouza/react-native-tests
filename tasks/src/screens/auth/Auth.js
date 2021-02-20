@@ -1,26 +1,77 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { Alert, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 
 import styles from "./auth.styles";
 import image from "../../../assets/imgs/login.jpg";
-import { TextInput } from 'react-native-gesture-handler';
+import { server, showError, showSuccess } from '../../common/common';
+
+import AuthInput from '../../components/AuthInput';
+
+
+const initialState = {
+    name: '',
+    email: 'fernando@dev.com',
+    password: '123456',
+    confirmPassword: '',
+    stageNew: false
+}
 
 export default class extends Component {
 
-    state = {
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        stageNew: false
-    };
+    state = { ...initialState };
 
     signinOrSigup = () => {
-        if (this.state.stageNew) Alert.alert('Sucesso!', 'Criar conta')
-        else Alert.alert('Sucesso!', 'Logar')
+        if (this.state.stageNew) this.signup();
+        else this.signin()
+    }
+
+    signup = async () => {
+        try {
+            await axios.post(`${server}/signup`, {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                confirmPassword: this.state.confirmPassword,
+            })
+
+            showSuccess('Usuário cadastrado!');
+            this.setState({ ...initialState });
+
+        } catch (error) {
+            showError(error);
+        }
+    }
+
+    signin = async () => {
+        try {
+            // TODO: descomentar quando implementar back-end
+            // const response = await axios.post(`${server}/signin`, {
+            //     email: this.state.email,
+            //     password: this.state.password,
+            // });
+
+            // axios.defaults.headers.common['Authorization'] = `bearer ${response.data.token}`;
+            this.props.navigation.navigate('Home');
+
+        } catch (error) {
+            showError(error);
+        }
     }
 
     render() {
+
+        const validations = [];
+
+        validations.push(this.state.email && this.state.email.includes('@'));
+        validations.push(this.state.password && this.state.password.length >= 6);
+
+        if (this.state.stageNew) {
+            validations.push(this.state.confirmPassword === this.state.password);
+            validations.push(this.state.name === this.state.name >= 3);
+        }
+
+        const validForm = validations.reduce((total, current) => total && current);
 
         return (
 
@@ -34,18 +85,22 @@ export default class extends Component {
                     </Text>
 
                     {this.state.stageNew &&
-                        <TextInput style={styles.input}
+                        <AuthInput style={styles.input}
+                            icon='user'
                             placeholder='Nome'
                             value={this.state.name}
                             onChangeText={name => this.setState({ name })} />
                     }
 
-                    <TextInput style={styles.input}
+
+                    <AuthInput style={styles.input}
+                        icon='at'
                         placeholder='E-mail'
                         value={this.state.email}
                         onChangeText={email => this.setState({ email })} />
 
-                    <TextInput style={styles.input}
+                    <AuthInput style={styles.input}
+                        icon='lock'
                         placeholder='Senha'
                         secureTextEntry={true}
                         value={this.state.password}
@@ -53,22 +108,23 @@ export default class extends Component {
 
                     {this.state.stageNew &&
 
-                        <TextInput style={styles.input}
+                        <AuthInput style={styles.input}
+                            icon='lock'
                             placeholder='Confimar Senha'
                             secureTextEntry={true}
                             value={this.state.confirmPassword}
                             onChangeText={confirmPassword => this.setState({ confirmPassword })} />
                     }
 
-                    <TouchableOpacity onPress={this.signinOrSigup}>
-                        <View style={styles.btn}>
+                    <TouchableOpacity onPress={this.signinOrSigup} disabled={!validForm}>
+                        <View style={[styles.btn, validForm ? styles.btnEnable : styles.btnDisabled]}>
                             <Text style={styles.btnText}>
                                 {this.state.stageNew ? 'Registrar' : 'Entrar'}
                             </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-                
+
                 <TouchableOpacity onPress={() => this.setState({ stageNew: !this.state.stageNew })}>
                     <View style={{ padding: 10 }}>
                         <Text style={styles.btnText}>
