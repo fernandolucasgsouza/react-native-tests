@@ -12,10 +12,9 @@ const Task = props => {
     const date = props.doneAt ? props.doneAt : props.estimateAt;
     const dateFormatted = moment(date).locale('pt-br').format('ddd, D [de] MMMM');
 
-
     return (
-        <TouchableWithoutFeedback onPress={() => props.toogleTask(props.id)}>
-            <View style={styles.container} >
+        <TouchableWithoutFeedback  onPress={() => props.toogleTask(props.id)}>
+            <View style={[styles.container]} >
                 <View style={styles.checkContainer}>
                     {getCheckView(props.doneAt)}
                 </View>
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#AAA',
         alignItems: 'center',
-        paddingVertical: 10
+        paddingVertical: 10,
     },
     checkContainer: {
         width: '20%',
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     desc: {
         fontFamily: commonStyles.fontFamily,
         color: commonStyles.colors.mainText,
-        fontSize: 15
+        fontSize: 15,
     },
     date: {
         fontFamily: commonStyles.fontFamily,
