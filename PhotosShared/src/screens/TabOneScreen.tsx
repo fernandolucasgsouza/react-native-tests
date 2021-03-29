@@ -1,9 +1,16 @@
 import * as Sharing from 'expo-sharing';
 import React, { useRef } from 'react';
-import { Alert, Button, StyleSheet, Text, View } from 'react-native';
+import {
+    Alert,
+    Button,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 
-export default function TabOneScreen() {
+export default function TabOneScreen(props: any) {
     const encodedBase64 = btoa('hello world');
     let _sharedViewContainer = useRef() as any;
 
@@ -67,6 +74,17 @@ export default function TabOneScreen() {
                     margin: 'auto',
                 }}
             >
+                <TouchableOpacity
+                    onPress={props.navigation.navigate('TabGallery')}
+                    style={{
+                        width: '100%',
+                        marginBottom: 20,
+                        padding: 10,
+                    }}
+                >
+                    <Text>Logar</Text>
+                </TouchableOpacity>
+
                 <Button onPress={openShareDialogAsync} title="Compartilhar" />
             </View>
         </>

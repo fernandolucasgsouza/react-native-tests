@@ -1,85 +1,56 @@
+import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createCompatNavigatorFactory } from '@react-navigation/compat';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import TabCameraScreen from '../screens/TabCameraScreen';
+import TabGalleryScreen from '../screens/TabGalleryScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 
-const MenuRoutes = [
-    {
-        name: 'TabeOne',
-        screen: TabOneScreen,
-        navigationOptions: {
-            title: 'TabeOne',
-            tabBarIcon: ({ tintColor }) => (
-                <Icon name="camera-retro" size={30} color={tintColor} />
-            ),
-        },
-    },
-
-    {
-        name: 'Camera',
-        screen: TabCameraScreen,
-        navigationOptions: {
-            title: 'Camera',
-            tabBarIcon: ({ tintColor }) => (
-                <Icon name="camera-retro" size={30} color={tintColor} />
-            ),
-        },
-    },
-];
-
-const MenuConfig = {
-    initialRouteName: 'TabOne',
-    tabBarOptions: { showLabel: false },
-};
-
 const BottomTab = createBottomTabNavigator();
+
+const RoutesUnAuthorize = createCompatNavigatorFactory(createStackNavigator)(
+    {
+        Auth: { screen: TabOneScreen },
+        TabGalleryScreen: { screen: TabGalleryScreen },
+    },
+    {
+        initialRouteName: 'TabGalleryScreen',
+    }
+);
 
 export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator
-            initialRouteName="TabOne"
-            tabBarOptions={{ showLabel: false }}
+            initialRouteName="TabGalleryScreen"
+            tabBarOptions={{
+                showLabel: false,
+                activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+            }}
         >
-            {MenuRoutes.map((tab) => {
-                <BottomTab.Screen
-                    name={tab.name}
-                    component={tab.screen}
-                    options={tab.navigationOptions}
-                />;
-            })}
+            <BottomTab.Screen
+                name="TabCamera"
+                component={TabCameraScreen}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons name="home" size={32} color={color} />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="TabGallery"
+                component={RoutesUnAuthorize}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons
+                            name="md-checkmark-circle"
+                            size={32}
+                            color={color}
+                        />
+                    ),
+                }}
+            />
         </BottomTab.Navigator>
     );
 }
-
-// const BottomTab = createBottomTabNavigator<BottomTabParamList>();
-
-// export default function BottomTabNavigator() {
-//     const colorScheme = useColorScheme();
-
-//     return (
-//         <BottomTab.Navigator
-//             initialRouteName="TabOne"
-//             tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
-//         >
-//             <BottomTab.Screen
-//                 name="TabOne"
-//                 component={TabOneNavigator}
-//                 options={{
-//                     tabBarIcon: ({ color }) => (
-//                         <TabBarIcon name="ios-code" color={color} />
-//                     ),
-//                 }}
-//             />
-//             <BottomTab.Screen
-//                 name="TabTwo"
-//                 component={TabTwoNavigator}
-//                 options={{
-//                     tabBarIcon: ({ color }) => (
-//                         <TabBarIcon name="ios-code" color={color} />
-//                     ),
-//                 }}
-//             />
-//         </BottomTab.Navigator>
-//     );
-// }
