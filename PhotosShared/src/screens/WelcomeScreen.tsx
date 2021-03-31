@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
+import {
+    Animated,
+    Dimensions,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import {
     ImageFolderSvg,
     PhotoSharingSvg,
@@ -31,7 +38,7 @@ const DATA = [
         key: '3',
         title: 'Where does it come from?',
         description:
-            'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC',
+            'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.',
         image: <ImageFolderSvg width={SVG_SIZE} height={SVG_SIZE} />,
     },
 ];
@@ -120,7 +127,7 @@ const Square = ({ scrollX }: any) => {
     );
 };
 
-export default function WelcomeScreen() {
+const WelcomeScreen = (props: any) => {
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
     return (
@@ -166,6 +173,22 @@ export default function WelcomeScreen() {
                                 <Text style={styles.text}>
                                     {item.description}
                                 </Text>
+                                {item.key === '1' ? (
+                                    <View style={{ alignItems: 'center' }}>
+                                        <TouchableOpacity
+                                            style={styles.btn}
+                                            onPress={() => {
+                                                props.navigation.navigate(
+                                                    'Login'
+                                                );
+                                            }}
+                                        >
+                                            <Text style={styles.btnText}>
+                                                Entrar
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : null}
                             </View>
                         </View>
                     );
@@ -174,7 +197,7 @@ export default function WelcomeScreen() {
             <Indicator scrollX={scrollX} />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -213,4 +236,18 @@ const styles = StyleSheet.create({
         top: -height * 0.65,
         left: -height * 0.35,
     },
+    btn: {
+        backgroundColor: '#FFF',
+        padding: 10,
+        marginVertical: 20,
+        alignItems: 'center',
+        borderRadius: 8,
+        width: SVG_SIZE,
+    },
+    btnText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#708090',
+    },
 });
+export default WelcomeScreen;
