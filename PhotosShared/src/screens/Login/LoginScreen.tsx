@@ -36,7 +36,9 @@ const LoginScreen = (props: any) => {
             // });
 
             // axios.defaults.headers.common['Authorization'] = `bearer ${response.data.token}`;
-            props.navigation.navigate('Home');
+            props.navigation.navigate('Tabs', {
+                screen: 'TabCamera',
+            });
         } catch (error) {
             console.log(error);
         }

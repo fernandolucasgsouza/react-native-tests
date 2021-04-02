@@ -5,7 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import MainStackNavigator from './navigation/StackNavigation';
+import Navigator from './navigation/Navigator';
 import storeConfig from './store/store-config';
 export default function App() {
     const isLoadingComplete = useCachedResources();
@@ -15,7 +15,6 @@ export default function App() {
 
     if (!global.btoa) global.btoa = encode;
     if (!global.atob) global.atob = decode;
-    console.log('App');
 
     if (!isLoadingComplete) {
         return null;
@@ -23,8 +22,7 @@ export default function App() {
         return (
             <SafeAreaProvider>
                 <Provider store={store}>
-                    {/* <WelcomeScreen /> */}
-                    <MainStackNavigator />
+                    <Navigator />
                 </Provider>
                 <StatusBar />
             </SafeAreaProvider>

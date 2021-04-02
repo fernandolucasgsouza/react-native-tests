@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
+import { StyleSheet, Text, View } from 'react-native';
+import { GallerySvg } from '../common/Icons/icons';
 
 export default function TabGalleryScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Tab Gallery</Text>
-            <View
-                style={styles.separator}
-                lightColor="#eee"
-                darkColor="rgba(255,255,255,0.1)"
-            />
+            <GallerySvg fill="green" />
         </View>
     );
 }
